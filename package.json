@@ -1,0 +1,20 @@
+{
+  "name": "pc-rendering-tcc-ufjf-frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "vite": "^8.3.0"
+  },
+  "dependencies": {
+    "three": "^0.186.0"
+  }
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gabriel PC Renderer (TCC - UFJF)</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #111;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="dataset-selector" class="minilog-control"
+        style="position: absolute; top: 10px; left: 10px; z-index: 100; display: flex; gap: 10px; flex-wrap: wrap; padding: 15px; border-radius: 8px;">
+        <button onclick="loadDataset('amsterdam')">amsterdam_ahn (185M)</button>
+        <button onclick="loadDataset('dinkey_creek')">dinkey_creek_op (29M)</button>
+        <button onclick="loadDataset('pisa')">pisa_oh_rgb (38M)</button>
+    </div>
+
+    <div id="miniLog" class="minilog-control"
+        style="position: absolute; top: 10px; left: 10px; z-index: 100; display: none; flex-direction: column; gap: 10px;">
+        <div id="log-content">Carregando...</div>
+        <button onclick="exitToMenu()">Voltar ao Menu</button>
+    </div>
+    <script>window.exitToMenu = function () {
+            document.getElementById('miniLog').style.display = 'none';
+            document.getElementById('dataset-selector').style.display = 'flex';
+            window.clearScene();
+        };
+
+        window.loadDataset = function (folderName) {
+            document.getElementById('dataset-selector').style.display = 'none';
+            document.getElementById('miniLog').style.display = 'flex';
+            window.init(folderName);
+        };</script>
+    <script type="module" src="./src/main.js"></script>
+</body>
+
+</html>
