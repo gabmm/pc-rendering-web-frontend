@@ -1,6 +1,6 @@
 export const Config = {
     SERVER_URL: '',
-    SERVER_BASE_URL: 'http://18.231.145.111/datasets/',
+    SERVER_BASE_URL: 'https://pc-rendering-server.duckdns.org/datasets/',
     PING_FILE: 'ping.txt',
     PING_INTERVAL: 2000,
     POINT_BUDGET: 5000000, // máximo de pontos na tela
