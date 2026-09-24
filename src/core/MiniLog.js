@@ -44,14 +44,15 @@ export class MiniLog {
     update(visibleNodes, activeFetches, cachedNodes, visiblePoints, showNodes, enableFetching) {
         this.statusDiv.innerHTML = `
             <div style="font-weight: bold; margin-bottom: 8px;">STATUS</div>
-            <div>FPS                 : ${this.currentFps}</div>
-            <div>Ping                : ${this.currentPing} ms</div>
-            <div>Nós Visíveis        : ${visibleNodes}</div>
-            <div>Pontos Visíveis     : ${visiblePoints}</div>
-            <div>Downloads Pendentes : ${activeFetches} / 5</div>
-            <div>Cache               : ${cachedNodes}</div>
-            <div>Mostrar nós?        : ${showNodes ? 'yes' : 'no'}</div>
-            <div>Habilitar download? : ${enableFetching ? 'yes' : 'no'}</div>
+            <div>FPS                     : ${this.currentFps}</div>
+            <div>Ping                    : ${this.currentPing} ms</div>
+            <div>Nós Visíveis            : ${visibleNodes}</div>
+            <div>Pontos Visíveis         : ${visiblePoints}</div>
+            <div>Downloads Pendentes     : ${activeFetches} / 5</div>
+            <div>Cache                   : ${cachedNodes}</div>
+            <div>Mostrar nós? [n]        : ${showNodes ? 'yes' : 'no'}</div>
+            <div>Habilitar download? [p] : ${enableFetching ? 'yes' : 'no'}</div>
+            <div>Limpar nós [l]</div>
         `;
     }
 
