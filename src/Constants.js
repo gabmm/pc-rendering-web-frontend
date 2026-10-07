@@ -1,6 +1,7 @@
 export const Config = {
     SERVER_URL: '',
     SERVER_BASE_URL: 'https://pc-rendering-server.duckdns.org/datasets/',
+    //SERVER_BASE_URL: 'http://localhost:8080/datasets/',
     PING_FILE: 'ping.txt',
     PING_INTERVAL: 2000,
     POINT_BUDGET: 5000000, // máximo de pontos na tela
@@ -8,6 +9,8 @@ export const Config = {
     MIN_NODE_PIXEL_SIZE: 30, // Limite do projectedSize
     MAX_AGE_FRAMES: 120,
     HAS_COLOR: false,
+    CLOUD_NAME: '',
+    POINT_SIZE: 0.1,
 
     setHasColor(value) {
         this.HAS_COLOR = value;
@@ -19,8 +22,14 @@ export const Config = {
         console.log(`[Config] Point Budget alterado para: ${value}`);
     },
 
+    setPointSize(value) {
+        this.POINT_SIZE = value;
+        console.log(`[Config] Point Size alterado para: ${value}`);
+    },
+
     setServerUrl(value) {
         this.SERVER_URL = this.SERVER_BASE_URL + value;
+        this.CLOUD_NAME = value;
         console.log(`[Config] URL do servidor alterada para: ${this.SERVER_URL}`);
     }
 };

@@ -8,6 +8,23 @@ export class BinFetcher {
         this.activeFetches = new Set(); //controlador de requisições
         this.MAX_CONCURRENT_FETCHES = Config.MAX_CONCURRENT_FETCHES;
         this.enableFetching = true;
+
+        this.pointMaterial = null;
+    }
+
+    updateMaterial() {
+        this.pointMaterial = Config.HAS_COLOR ?
+            new THREE.PointsMaterial({
+                size: Config.POINT_SIZE,
+                sizeAttenuation: true,
+                vertexColors: true
+            })
+            :
+            new THREE.PointsMaterial({
+                color: 0x00ff00,
+                size: Config.POINT_SIZE,
+                sizeAttenuation: true,
+            });
     }
 
     processFetchQueue(visibleQueue) {
@@ -96,24 +113,23 @@ export class BinFetcher {
             const colorBuffer = new THREE.InterleavedBuffer(colorArray, 16);
             geometry.setAttribute('color', new THREE.InterleavedBufferAttribute(colorBuffer, 3, 12, true))
 
-            material = new THREE.PointsMaterial({
-                size: 0.1,
-                sizeAttenuation: true,
-                vertexColors: true
-            });
-
+            // material = new THREE.PointsMaterial({
+            //     size: Config.POINT_SIZE,
+            //     sizeAttenuation: true,
+            //     vertexColors: true
+            // });
         } else {
             const positionArray = new Float32Array(arrayBuffer);
             geometry.setAttribute('position', new THREE.BufferAttribute(positionArray, 3));
 
-            material = new THREE.PointsMaterial({
-                color: 0x00ff00,
-                size: 0.1,
-                sizeAttenuation: true
-            });
+            // material = new THREE.PointsMaterial({
+            //     color: 0x00ff00,
+            //     size: Config.POINT_SIZE,
+            //     sizeAttenuation: true
+            // });
         }
 
-        return new THREE.Points(geometry, material);
+        return new THREE.Points(geometry, this.pointMaterial);
     }
 
     abortAll() {

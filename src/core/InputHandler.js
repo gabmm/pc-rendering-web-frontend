@@ -1,14 +1,18 @@
 import { Config } from '../Constants.js';
 
 export class InputHandler {
-    constructor(viewer, cacheManager, binFetcher) {
+    constructor(viewer, cacheManager, binFetcher, telemetry) {
         this.INITIAL_POINT_BUDGET = Config.POINT_BUDGET;
+        this.INITIAL_POINT_SIZE = Config.POINT_SIZE;
         this.viewer = viewer;
         this.cacheManager = cacheManager;
         this.binFetcher = binFetcher;
         this.isTopologyVisible = true;
         this.budgetSlider = document.getElementById('budgetSlider');
         this.budgetValueDisplay = document.getElementById('budgetValueDisplay');
+        this.sizeSlider = document.getElementById('sizeSlider');
+        this.sizeValueDisplay = document.getElementById('sizeValueDisplay');
+        this.telemetry = telemetry;
         this._setupKeyboard();
     }
 
@@ -43,6 +47,16 @@ export class InputHandler {
             }
         });
 
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'r' || event.key === 'R') {
+                if (!this.telemetry.isRecording) {
+                    this.telemetry.startRecording();
+                } else {
+                    this.telemetry.stopRecording();
+                }
+            }
+        });
+
         if (this.budgetSlider && this.budgetValueDisplay) {
             this.budgetSlider.addEventListener('input', (event) => {
                 const newBudget = parseInt(event.target.value, 10);
@@ -50,7 +64,19 @@ export class InputHandler {
                 Config.setPointBudget(newBudget);
             });
         } else {
-            console.warn("[InputHandler] Elementos do Slider não encontrados no DOM.");
+            console.warn("[InputHandler] Elementos do Budget Slider não encontrados no DOM.");
+        }
+
+        if (this.sizeSlider && this.sizeValueDisplay) {
+            this.sizeSlider.addEventListener('input', (event) => {
+                const newSize = parseFloat(event.target.value);
+                this.sizeValueDisplay.innerText = newSize.toFixed(3);
+                Config.setPointSize(newSize);
+                this.binFetcher.pointMaterial.size = newSize;
+                this.binFetcher.pointMaterial.needsUpdate = true;
+            });
+        } else {
+            console.warn("[InputHandler] Elementos do Size Slider não encontrados no DOM.");
         }
     }
 
@@ -65,5 +91,9 @@ export class InputHandler {
         Config.setPointBudget(this.INITIAL_POINT_BUDGET);
         this.budgetValueDisplay.innerText = (this.INITIAL_POINT_BUDGET / 1000000).toFixed(1) + ' M';
         this.budgetSlider.value = this.INITIAL_POINT_BUDGET;
+        Config.setPointSize(this.INITIAL_POINT_SIZE);
+        this.binFetcher.pointMaterial.size = this.INITIAL_POINT_SIZE;
+        this.sizeValueDisplay.innerText = this.INITIAL_POINT_SIZE.toFixed(3);
+        this.sizeSlider.value = this.INITIAL_POINT_SIZE;
     }
 }

@@ -4,16 +4,16 @@ import { OctreeLoader } from './loaders/OctreeLoader.js';
 import { BinFetcher } from './loaders/BinFetcher.js';
 import { OctreeTraverser } from './core/OctreeTraverser.js';
 import { CacheManager } from './core/CacheManager.js';
-import { MiniLog } from './core/MiniLog.js';
+import { Telemetry } from './core/Telemetry.js';
 import { Config } from './Constants.js';
 
 const viewer = new Viewer();
-const miniLog = new MiniLog();
+const telemetry = new Telemetry(viewer.renderer);
 const octreeLoader = new OctreeLoader(viewer);
 const octreeTraverser = new OctreeTraverser();
 const cacheManager = new CacheManager(viewer);
 const binFetcher = new BinFetcher(viewer, cacheManager);
-const inputHandler = new InputHandler(viewer, cacheManager, binFetcher);
+const inputHandler = new InputHandler(viewer, cacheManager, binFetcher, telemetry);
 
 let rootNode = null;
 let previousVisibleQueue = [];
@@ -29,6 +29,9 @@ function animate() {
     }
 
     requestAnimationFrame(animate);
+
+    telemetry.pollGpuTimers();
+
     frameCount++;
     frameCountForFps++;
 
@@ -72,9 +75,9 @@ function animate() {
         previousVisibleQueue = visibleQueue;
     }
 
-    frameCountForFps = miniLog.updateFps(frameCountForFps);
+    frameCountForFps = telemetry.updateFps(frameCountForFps);
 
-    miniLog.update(
+    telemetry.update(
         visibleQueue.length,
         binFetcher.activeFetches.size,
         cacheManager.loadedNodes.size,
@@ -83,8 +86,11 @@ function animate() {
         binFetcher.enableFetching
     );
 
+    const timerContext = telemetry.beginGpuTimer(visiblePointsQty);
 
     viewer.update();
+
+    telemetry.endGpuTimer(timerContext);
 }
 
 async function init(datasetFolder) {
@@ -96,6 +102,8 @@ async function init(datasetFolder) {
         console.error("[Main] Não é possível iniciar. Octree não carregada.");
     } else {
         console.log("[Main] Iniciando aplicação...");
+        viewer.adjustCamera(rootNode.boundingBox);
+        binFetcher.updateMaterial();
     }
 
     animate();
@@ -114,11 +122,9 @@ function clearScene() {
 
     binFetcher.abortAll();
     cacheManager.swipeAll();
-    viewer.clearHelpers();
-    viewer.setDefault();
     inputHandler.setDefault();
-    miniLog.setDefault();
-    viewer.update();
+    telemetry.setDefault();
+    viewer.setDefault();
 }
 
 window.init = init;

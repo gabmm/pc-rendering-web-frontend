@@ -5,6 +5,7 @@ import { Config } from '../Constants.js';
 export class OctreeLoader {
     constructor(viewer) {
         this.viewer = viewer;
+        this.totalPoints = 0;
     }
 
     async load() {
@@ -33,6 +34,7 @@ export class OctreeLoader {
         const max = new THREE.Vector3(...jsonData.max);
         const nodeBbox = new THREE.Box3(min, max);
         const numPoints = parseInt(jsonData.num_points, 10) || 0;
+        this.totalPoints += numPoints;
 
         const node = new OctreeNode(
             jsonData.id,
