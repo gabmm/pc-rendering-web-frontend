@@ -19,16 +19,25 @@
 
 <body>
     <div id="dataset-selector" class="minilog-control"
-        style="position: absolute; top: 10px; left: 10px; z-index: 100; display: flex; gap: 10px; flex-wrap: wrap; padding: 15px; border-radius: 8px;">
-        <button onclick="loadDataset('amsterdam')">amsterdam (34.61 M)</button>
-        <button onclick="loadDataset('buddha')">buddha (18.56 M)</button>
-        <button onclick="loadDataset('cephalotaxus-harringtonii-tree')">cephalotaxus-harringtonii-tree (0.51 M)</button>
-        <button onclick="loadDataset('dinning-room')">dinning-room (268.42 M)</button>
-        <button onclick="loadDataset('hilltop')">hilltop (196.92 M)</button>
-        <button onclick="loadDataset('monarch-of-the-swamp-tree')">monarch-of-the-swamp-tree (22.87 M)</button>
-        <button onclick="loadDataset('unnamed')">unnamed (381.68 M)</button>
-        <button onclick="loadDataset('vulcan-mountain')">vulcan-mountain (156.70 M)</button>
-        <button onclick="loadDataset('local')">does nothing</button>
+        style="position: absolute; top: 20px; left: 20px; z-index: 100; padding: 20px; background: rgba(0, 0, 0, 0.85); border-radius: 8px; color: #fff; font-family: sans-serif; max-height: 90vh; overflow-y: auto;">
+
+        <h2 style="margin-top: 0; margin-bottom: 15px; font-size: 36px; border-bottom: 1px; padding-bottom: 10px;">
+            Select cloud:</h2>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+            <thead>
+                <tr style="border-bottom: 2px solid #555;">
+                    <th style="padding: 10px;">Cloud Name</th>
+                    <th style="padding: 10px; white-space: nowrap;">Size</th>
+                    <th style="padding: 10px;">RGB?</th>
+                    <th style="padding: 10px;">Description</th>
+                    <th style="padding: 10px;">Source</th>
+                    <th style="padding: 10px;"></th>
+                </tr>
+            </thead>
+            <tbody id="dataset-table-body">
+            </tbody>
+        </table>
     </div>
 
     <div id="miniLog" class="minilog-control"
@@ -38,7 +47,7 @@
     </div>
     <script>window.exitToMenu = function () {
             document.getElementById('miniLog').style.display = 'none';
-            document.getElementById('dataset-selector').style.display = 'flex';
+            document.getElementById('dataset-selector').style.display = 'block';
             window.clearScene();
         };
 

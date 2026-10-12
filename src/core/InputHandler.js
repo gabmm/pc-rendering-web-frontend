@@ -1,4 +1,5 @@
 import { Config } from '../Constants.js';
+import * as THREE from 'three';
 
 export class InputHandler {
     constructor(viewer, cacheManager, binFetcher, telemetry) {
@@ -44,6 +45,27 @@ export class InputHandler {
             if (event.key === 'l' || event.key === 'L') {
                 this.cacheManager.swipeAll();
                 console.log(`[InputHandler] Nós excluídos`);
+            }
+        });
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'c' || event.key === 'C') {
+                const pos = new THREE.Vector3();
+                const target = new THREE.Vector3();
+
+                this.viewer.controls.getPosition(pos);
+                this.viewer.controls.getTarget(target);
+
+                const currentSize = this.binFetcher.pointMaterial.size;
+
+                const configString = `
+                    "${Config.CLOUD_NAME}": {
+                        position: { x: ${pos.x.toFixed(2)}, y: ${pos.y.toFixed(2)}, z: ${pos.z.toFixed(2)} },
+                        target: { x: ${target.x.toFixed(2)}, y: ${target.y.toFixed(2)}, z: ${target.z.toFixed(2)} },
+                        pointSize: ${currentSize.toFixed(3)}
+                    },`;
+
+                console.log(configString);
             }
         });
 

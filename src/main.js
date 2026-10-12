@@ -6,6 +6,7 @@ import { OctreeTraverser } from './core/OctreeTraverser.js';
 import { CacheManager } from './core/CacheManager.js';
 import { Telemetry } from './core/Telemetry.js';
 import { Config } from './Constants.js';
+import { buildDatasetTableUI, applyCloudSettings } from './CloudDefaultSettings.js';
 
 const viewer = new Viewer();
 const telemetry = new Telemetry(viewer.renderer);
@@ -14,6 +15,7 @@ const octreeTraverser = new OctreeTraverser();
 const cacheManager = new CacheManager(viewer);
 const binFetcher = new BinFetcher(viewer, cacheManager);
 const inputHandler = new InputHandler(viewer, cacheManager, binFetcher, telemetry);
+buildDatasetTableUI();
 
 let rootNode = null;
 let previousVisibleQueue = [];
@@ -102,8 +104,15 @@ async function init(datasetFolder) {
         console.error("[Main] Não é possível iniciar. Octree não carregada.");
     } else {
         console.log("[Main] Iniciando aplicação...");
-        viewer.adjustCamera(rootNode.boundingBox);
         binFetcher.updateMaterial();
+
+        const hasCustomSettings = applyCloudSettings(datasetFolder, viewer, binFetcher);
+
+        if (!hasCustomSettings) {
+            viewer.adjustCamera(rootNode.boundingBox);
+        }
+
+
     }
 
     animate();
