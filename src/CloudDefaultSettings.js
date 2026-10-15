@@ -190,7 +190,7 @@ export async function buildDatasetTableUI() {
     const entries = Object.entries(CloudSettings);
 
     const healthChecks = await Promise.all(entries.map(async ([cloudName]) => {
-        const url = `${Config.SERVER_URL}${cloudName}/octree.json`;
+        const url = `${Config.SERVER_BASE_URL}${cloudName}/octree.json`;
         try {
             const response = await fetch(url, { method: 'HEAD' });
             return response.ok;
