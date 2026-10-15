@@ -1,4 +1,4 @@
-// CloudDefaultSettings.js
+import { Config } from "./Constants.js";
 
 export const CloudSettings = {
     "amsterdam": {
@@ -10,7 +10,12 @@ export const CloudSettings = {
 
         position: { x: 48.21, y: 7.51, z: 520.17 },
         target: { x: 443.31, y: 636.88, z: -437.47 },
-        pointSize: 0.420
+        pointSize: 0.420,
+
+        cloudBbox: { min: { x: 0, y: 0, z: 0 }, max: { x: 1040, y: 1290, z: 107.696 } },
+        lawnmowerZ: 85,
+        lawnmowerSpeed: 346.0,
+        lawnmowerSpacing: 0.75
     },
     "buddha": {
         size: "18.56",
@@ -21,7 +26,11 @@ export const CloudSettings = {
 
         position: { x: -0.97, y: 0.41, z: 3.57 },
         target: { x: 1.10, y: 1.76, z: 0.80 },
-        pointSize: 0.001
+        pointSize: 0.001,
+
+        orbitRadii: [0.32, 0.99, 3.55],
+        orbitSpeedDeg: 72,
+        orbitTarget: { x: 1.33, y: 1.33, z: 1.14 }
     },
     "cephalotaxus-harringtonii-tree": {
         size: "0.51",
@@ -76,7 +85,12 @@ export const CloudSettings = {
 
         position: { x: 210.40, y: 532.10, z: 92.75 },
         target: { x: 229.94, y: 380.12, z: -4.72 },
-        pointSize: 0.316
+        pointSize: 0.316,
+
+        cloudBbox: { min: { x: 0, y: 0, z: 0 }, max: { x: 396.433, y: 537.809, z: 45.443 } },
+        lawnmowerZ: 59.81,
+        lawnmowerSpeed: 79.0,
+        lawnmowerSpacing: 0.75
     },
     "monarch-of-the-swamp-tree": {
         size: "22.87",
@@ -120,7 +134,15 @@ export const CloudSettings = {
 
         position: { x: 399.65, y: 218.92, z: 44.31 },
         target: { x: 335.78, y: 217.19, z: 16.06 },
-        pointSize: 0.018
+        pointSize: 0.018,
+
+        cloudBbox: { min: { x: 0, y: 0, z: 0 }, max: { x: 469.731, y: 346.227, z: 48.773 } },
+        lawnmowerZ: 64.23,
+        lawnmowerSpeed: 63.0,
+        lawnmowerSpacing: 0.75,
+        orbitRadii: [1.77, 11.20, 37.42],
+        orbitSpeedDeg: 72,
+        orbitTarget: { x: 346.32, y: 213.87, z: 14.53 }
     },
     "san-gabriel-mountain": {
         size: "234.92",
@@ -157,15 +179,37 @@ export const CloudSettings = {
     }
 };
 
-export function buildDatasetTableUI() {
+export async function buildDatasetTableUI() {
     const tbody = document.getElementById('dataset-table-body');
     if (!tbody) return;
 
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Checking cloud avaliability...</td></tr>';
+
     let html = '';
 
-    for (const [cloudName, data] of Object.entries(CloudSettings)) {
+    const entries = Object.entries(CloudSettings);
+
+    const healthChecks = await Promise.all(entries.map(async ([cloudName]) => {
+        const url = `${Config.SERVER_URL}${cloudName}/octree.json`;
+        try {
+            const response = await fetch(url, { method: 'HEAD' });
+            return response.ok;
+        } catch (error) {
+            console.log(`[Verifier] Cloud ${cloudName} indisponível no momento`);
+            return false;
+        }
+    }));
+
+    entries.forEach(([cloudName, data], i) => {
+
+        const actionCell = healthChecks[i]
+            ? `<button onclick="window.loadDataset('${cloudName}')" style="cursor: pointer; padding: 5px 10px; background: #333; color: white; border: 1px solid #555; border-radius: 4px;">
+                Load Cloud
+               </button>`
+            : `<span style="color: #ff4444; font-size: 13px; font-weight: bold; cursor: not-allowed;" title="Nuvem não encontrada no servidor">Indisponível</span>`;
+
         html += `
-        <tr style="border-bottom: 1px solid #333;">
+            <tr style="border-bottom: 1px solid #333; opacity: ${healthChecks[i] ? '1' : '0.5'};">
             <td style="padding: 10px; font-weight: bold;">${cloudName}</td>
             <td style="padding: 10px; white-space: nowrap;">${data.size ? data.size + ' M' : '--'}</td>
             <td style="padding: 10px; white-space: nowrap;">${data.isRgb}</td>
@@ -175,14 +219,12 @@ export function buildDatasetTableUI() {
                     [${data.sourceLabel || 'Link'}]
                 </a>
             </td>
-            <td style="padding: 10px;">
-                <button onclick="window.loadDataset('${cloudName}')" style="cursor: pointer; padding: 5px 10px; background: #333; color: white; border: 1px solid #555; border-radius: 4px;">
-                    Load Cloud
-                </button>
+            <td style="padding: 10px; text-align: center;">
+                ${actionCell}
             </td>
-        </tr>
-        `;
-    }
+        </tr >
+            `;
+    });
 
     tbody.innerHTML = html;
 }
