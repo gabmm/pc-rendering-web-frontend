@@ -206,7 +206,7 @@ export async function buildDatasetTableUI() {
             ? `<button onclick="window.loadDataset('${cloudName}')" style="cursor: pointer; padding: 5px 10px; background: #333; color: white; border: 1px solid #555; border-radius: 4px;">
                 Load Cloud
                </button>`
-            : `<span style="color: #ff4444; font-size: 13px; font-weight: bold; cursor: not-allowed;" title="Nuvem não encontrada no servidor">Indisponível</span>`;
+            : `<span style="color: #ff4444; font-size: 13px; font-weight: bold; cursor: not-allowed;" title="Unavailable cloud">Unavailable</span>`;
 
         html += `
             <tr style="border-bottom: 1px solid #333; opacity: ${healthChecks[i] ? '1' : '0.5'};">
