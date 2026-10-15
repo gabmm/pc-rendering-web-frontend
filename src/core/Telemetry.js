@@ -30,7 +30,7 @@ export class Telemetry {
 
         //ping
         this.currentPing = 0;
-        this._initPingCounter(Config.SERVER_BASE_URL + Config.PING_FILE);
+        this._initPingCounter();
 
         //draw call times
         this.isRecording = false;
@@ -118,11 +118,11 @@ export class Telemetry {
         this.isRecording = false;
     }
 
-    _initPingCounter(url) {
+    _initPingCounter() {
         setInterval(async () => {
             const startTime = performance.now();
             try {
-                await fetch(url, { cache: 'no-store' });
+                await fetch(Config.SERVER_URL + '/octree.json', { method: 'HEAD', cache: 'no-store' });
                 this.currentPing = Math.round(performance.now() - startTime);
             } catch (e) {
                 this.currentPing = 'ERROR';
