@@ -101,7 +101,7 @@ export const CloudSettings = {
 
         position: { x: 3.18, y: -16.42, z: 17.95 },
         target: { x: 13.87, y: 8.04, z: 10.22 },
-        pointSize: 0.001
+        pointSize: 0.035
     },
     "petit-versailles": {
         size: "198.29",
