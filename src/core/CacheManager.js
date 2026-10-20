@@ -28,7 +28,7 @@ export class CacheManager {
     }
 
     _evict(node) {
-        console.log(`[Cache] Removendo nó ID ${node.id}`);
+        // console.log(`[Cache] Removendo nó ID ${node.id}`);
 
         if (node.mesh) {
             this.viewer.scene.remove(node.mesh);

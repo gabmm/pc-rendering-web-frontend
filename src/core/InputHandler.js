@@ -15,6 +15,8 @@ export class InputHandler {
         this.sizeValueDisplay = document.getElementById('sizeValueDisplay');
         this.telemetry = telemetry;
         this._setupKeyboard();
+
+        this.capturedKeyFrames = [];
     }
 
     _setupKeyboard() {
@@ -65,7 +67,50 @@ export class InputHandler {
                         pointSize: ${currentSize.toFixed(3)}
                     },`;
 
-                console.log(configString);
+                const trajectoryKeyFrames = `{
+                        camPos: { x: ${pos.x.toFixed(2)}, y: ${pos.y.toFixed(2)}, z: ${pos.z.toFixed(2)} },
+                        target: { x: ${target.x.toFixed(2)}, y: ${target.y.toFixed(2)}, z: ${target.z.toFixed(2)} },
+                    },`;
+
+                this.capturedKeyFrames.push({
+                    camPos: { x: pos.x, y: pos.y, z: pos.z },
+                    target: { x: target.x, y: target.y, z: target.z }
+                });
+
+
+                //console.log(configString);
+                console.log(trajectoryKeyFrames);
+            }
+        });
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'i' || event.key === 'I') {
+                if (!this.capturedKeyFrames.length) {
+                    console.error(`[InputHandler] Nenhum keyframe capturado`)
+                }
+                const toRound = (num) => Math.round((num + Number.EPSILON) * 1000) / 1000;
+                const roundedKeyFramesPositions = this.capturedKeyFrames.map(item => ({
+                    camPos: {
+                        x: toRound(item.camPos.x),
+                        y: toRound(item.camPos.y),
+                        z: toRound(item.camPos.z)
+                    },
+                    target: {
+                        x: toRound(item.target.x),
+                        y: toRound(item.target.y),
+                        z: toRound(item.target.z)
+                    }
+                }));
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(roundedKeyFramesPositions), null, 2);
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute('href', dataStr);
+                const fileName = `keyframes.json`;
+                downloadAnchorNode.setAttribute('download', fileName);
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+                console.log(`[InputHandler] Entrega de keyframes capturados`);
+                this.capturedKeyFrames = [];
             }
         });
 

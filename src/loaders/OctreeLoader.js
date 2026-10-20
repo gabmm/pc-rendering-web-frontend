@@ -22,7 +22,8 @@ export class OctreeLoader {
             Config.setHasColor(pcData.hasColor);
 
             console.log("[OctreeMapLoader] Point Cloud com cor?", Config.HAS_COLOR);
-            console.log("[OctreeMapLoader] Topologia mapeada!", rootNode);
+            console.log("[OctreeMapLoader] Topologia mapeada!");
+            //console.log("[OctreeMapLoader] Topologia mapeada!", rootNode);
             return rootNode;
         } catch (e) {
             console.error("[OctreeMapLoader] Falha ao carregar topologia:", e);

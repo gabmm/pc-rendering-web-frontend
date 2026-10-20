@@ -2,6 +2,8 @@ import { Config } from "../Constants.js";
 
 export class Telemetry {
     constructor(renderer) {
+        this.trajectoryConfig = null;
+
         this.container = document.getElementById('miniLog');
         this.container.style.color = '#00FF00';
         this.container.style.fontFamily = 'monospace';
@@ -116,6 +118,17 @@ export class Telemetry {
         this.lastFpsTime = performance.now();
         this.currentFps = 0;
         this.isRecording = false;
+
+        this.frameLog = [];
+        this.currentFrameId = 0;
+
+        if (this.ext && this.pendingQueries.length > 0) {
+            for (const item of this.pendingQueries) {
+                this.gl.deleteQuery(item.query);
+            }
+        }
+
+        this.pendingQueries = [];
     }
 
     _initPingCounter() {
@@ -142,7 +155,7 @@ export class Telemetry {
 
     stopRecording() {
         this.isRecording = false;
-        this.frameLog.push(Config);
+        this.frameLog.push({ ...Config, ...this.trajectoryConfig });
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.frameLog, null, 2));
         const downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute('href', dataStr);
@@ -212,5 +225,17 @@ export class Telemetry {
                 break; //se a mais antiga não está pronta, as demais também não
             }
         }
+    }
+
+    setTrajectoryConfig(segDuration, totalDuration, keyframes, speedMultiplier, warmupDuration) {
+        this.trajectoryConfig = {
+            KEY_FRAMES: keyframes,
+            SEGMENT_DURATIONS: segDuration,
+            SPEED_MULTIPLIER: speedMultiplier,
+            TOTAL_ESTIMATED_DURATION: totalDuration,
+            WARM_UP_DURATION: warmupDuration
+        }
+
+        console.log(`[Telemetry] Configurações de trajetória recebidas`, this.trajectoryConfig)
     }
 }

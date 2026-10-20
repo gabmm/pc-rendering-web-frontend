@@ -87,21 +87,24 @@ export class Viewer {
 
         this.topologyHelpers.forEach(helper => {
             this.scene.remove(helper);
+            if (helper.geometry) helper.geometry.dispose();
+            if (helper.material) helper.material.dispose();
         });
+
+        this.topologyHelpers = [];
     }
 
     setDefault() {
-        this.controls.reset();
-        this.topologyHelpers = [];
+        this.controls.enabled = true;
+        this.controls.reset(false);
+        this.clearHelpers();
+        this.renderer.renderLists.dispose();
         this.showNodes = false;
         this.showPoints = true;
-        this.clearHelpers();
         this.update();
     }
 
-    update() {
-        this.timer.update();
-        const delta = this.timer.getDelta();
+    update(delta) {
         this.controls.update(delta)
         this.renderer.render(this.scene, this.camera);
     }

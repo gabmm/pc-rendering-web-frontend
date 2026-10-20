@@ -51,10 +51,10 @@
             window.clearScene();
         };
 
-        window.loadDataset = function (folderName) {
+        window.loadDataset = function (folderName, runBenchmark = false) {
             document.getElementById('dataset-selector').style.display = 'none';
             document.getElementById('miniLog').style.display = 'flex';
-            window.init(folderName);
+            window.init(folderName, runBenchmark);
         };</script>
     <script type="module" src="./src/main.js"></script>
 </body>

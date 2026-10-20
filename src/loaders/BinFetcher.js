@@ -13,6 +13,10 @@ export class BinFetcher {
     }
 
     updateMaterial() {
+        if (this.pointMaterial) {
+            this.pointMaterial.dispose();
+        }
+
         this.pointMaterial = Config.HAS_COLOR ?
             new THREE.PointsMaterial({
                 size: Config.POINT_SIZE,
@@ -41,7 +45,7 @@ export class BinFetcher {
                 node.status = NODE_STATUS.UNLOADED;
                 node.abortController = null;
                 this.activeFetches.delete(node);
-                console.log(`[Rede] Abortado nó ID ${node.id}`);
+                // console.log(`[Rede] Abortado nó ID ${node.id}`);
             }
         }
 
@@ -64,7 +68,7 @@ export class BinFetcher {
         this.activeFetches.add(node);
 
         try {
-            console.log(`[Rede] Iniciando requisição do arquivo ${node.id}.bin...`);
+            // console.log(`[Rede] Iniciando requisição do arquivo ${node.id}.bin...`);
             //const response = await fetch(`${Config.SERVER_URL}/${Config.BIN_ROUTE}/${node.id}.bin`, {
             const response = await fetch(`${Config.SERVER_URL}/${node.id}.bin`, {
                 signal: node.abortController.signal
@@ -75,6 +79,12 @@ export class BinFetcher {
             }
 
             const binBuffer = await response.arrayBuffer();
+
+            if (!node.abortController || node.abortController.signal.aborted) {
+                node.status = NODE_STATUS.UNLOADED;
+                return;
+            }
+
             //const typedArray = new Float32Array(binBuffer);
             const pointMesh = this._buildMesh(binBuffer, Config.HAS_COLOR);
 
@@ -133,7 +143,7 @@ export class BinFetcher {
     }
 
     abortAll() {
-        console.log(`[Rede] Abortando ${this.activeFetches.size} downloads em andamento.`);
+        // console.log(`[Rede] Abortando ${this.activeFetches.size} downloads em andamento.`);
         for (const node of this.activeFetches) {
             node.abortController.abort();
         }

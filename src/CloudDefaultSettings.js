@@ -1,4 +1,8 @@
 import { Config } from "./Constants.js";
+import amsterdamTraj from './trajectories/amsterdam.json';
+import buddhaTraj from './trajectories/buddha.json';
+import hilltopTraj from './trajectories/hilltop.json';
+import rosedownTraj from './trajectories/rosedown.json';
 
 export const CloudSettings = {
     "amsterdam": {
@@ -12,10 +16,8 @@ export const CloudSettings = {
         target: { x: 443.31, y: 636.88, z: -437.47 },
         pointSize: 0.420,
 
-        cloudBbox: { min: { x: 0, y: 0, z: 0 }, max: { x: 1040, y: 1290, z: 107.696 } },
-        lawnmowerZ: 85,
-        lawnmowerSpeed: 346.0,
-        lawnmowerSpacing: 0.75
+        speedMultiplier: 0.8,
+        trajectory: amsterdamTraj
     },
     "buddha": {
         size: "18.56",
@@ -28,9 +30,8 @@ export const CloudSettings = {
         target: { x: 1.10, y: 1.76, z: 0.80 },
         pointSize: 0.001,
 
-        orbitRadii: [0.32, 0.99, 3.55],
-        orbitSpeedDeg: 72,
-        orbitTarget: { x: 1.33, y: 1.33, z: 1.14 }
+        speedMultiplier: 0.5,
+        trajectory: buddhaTraj
     },
     "cephalotaxus-harringtonii-tree": {
         size: "0.51",
@@ -87,10 +88,8 @@ export const CloudSettings = {
         target: { x: 229.94, y: 380.12, z: -4.72 },
         pointSize: 0.316,
 
-        cloudBbox: { min: { x: 0, y: 0, z: 0 }, max: { x: 396.433, y: 537.809, z: 45.443 } },
-        lawnmowerZ: 59.81,
-        lawnmowerSpeed: 79.0,
-        lawnmowerSpacing: 0.75
+        speedMultiplier: 0.8,
+        trajectory: hilltopTraj
     },
     "monarch-of-the-swamp-tree": {
         size: "22.87",
@@ -136,13 +135,8 @@ export const CloudSettings = {
         target: { x: 335.78, y: 217.19, z: 16.06 },
         pointSize: 0.018,
 
-        cloudBbox: { min: { x: 0, y: 0, z: 0 }, max: { x: 469.731, y: 346.227, z: 48.773 } },
-        lawnmowerZ: 64.23,
-        lawnmowerSpeed: 63.0,
-        lawnmowerSpacing: 0.75,
-        orbitRadii: [1.77, 11.20, 37.42],
-        orbitSpeedDeg: 72,
-        orbitTarget: { x: 346.32, y: 213.87, z: 14.53 }
+        speedMultiplier: 0.4,
+        trajectory: rosedownTraj
     },
     "san-gabriel-mountain": {
         size: "234.92",
@@ -202,10 +196,18 @@ export async function buildDatasetTableUI() {
 
     entries.forEach(([cloudName, data], i) => {
 
+        const hasTrajectory = data.trajectory?.length > 2;
+
         const actionCell = healthChecks[i]
             ? `<button onclick="window.loadDataset('${cloudName}')" style="cursor: pointer; padding: 5px 10px; background: #333; color: white; border: 1px solid #555; border-radius: 4px;">
                 Load Cloud
-               </button>`
+               </button>
+               ${hasTrajectory ? `
+         <button onclick="window.loadDataset('${cloudName}', true)" style="cursor: pointer; padding: 5px 10px; background: #1b3a20; color: #4CAF50; border: 1px solid #4CAF50; border-radius: 4px;">
+             Run Benchmark
+         </button>` : ''}
+       </div>
+               `
             : `<span style="color: #ff4444; font-size: 13px; font-weight: bold; cursor: not-allowed;" title="Unavailable cloud">Unavailable</span>`;
 
         html += `
@@ -232,7 +234,7 @@ export async function buildDatasetTableUI() {
 export function applyCloudSettings(datasetName, viewer, binFetcher) {
     const settings = CloudSettings[datasetName];
 
-    if (!settings) return false;
+    if (!settings) return null;
 
     if (binFetcher && binFetcher.pointMaterial) {
         binFetcher.pointMaterial.size = settings.pointSize;
@@ -252,6 +254,6 @@ export function applyCloudSettings(datasetName, viewer, binFetcher) {
         false
     );
 
-    return true;
+    return settings;
 }
 

@@ -7,6 +7,7 @@ import { CacheManager } from './core/CacheManager.js';
 import { Telemetry } from './core/Telemetry.js';
 import { Config } from './Constants.js';
 import { buildDatasetTableUI, applyCloudSettings } from './CloudDefaultSettings.js';
+import { Trajectory } from './core/Trajectory.js';
 
 const viewer = new Viewer();
 const telemetry = new Telemetry(viewer.renderer);
@@ -17,6 +18,7 @@ const binFetcher = new BinFetcher(viewer, cacheManager);
 const inputHandler = new InputHandler(viewer, cacheManager, binFetcher, telemetry);
 buildDatasetTableUI();
 
+let activeTrajectory = null;
 let rootNode = null;
 let previousVisibleQueue = [];
 let visibleQueue = [];
@@ -24,13 +26,21 @@ let frameCount = 0;
 let frameCountForFps = 0;
 let visiblePointsQty = 0;
 let cutoffIndex = 0;
+let animationFrameId = null;
 
 function animate() {
     if (!rootNode) {
         return;
     }
 
-    requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
+
+    viewer.timer.update();
+    const delta = viewer.timer.getDelta();
+
+    if (activeTrajectory && activeTrajectory.isActive) {
+        activeTrajectory.update(delta);
+    }
 
     telemetry.pollGpuTimers();
 
@@ -90,29 +100,44 @@ function animate() {
 
     const timerContext = telemetry.beginGpuTimer(visiblePointsQty);
 
-    viewer.update();
+    viewer.update(delta);
 
     telemetry.endGpuTimer(timerContext);
 }
 
-async function init(datasetFolder) {
+async function init(datasetFolder, runBenchmark = false) {
+    activeTrajectory = null;
+
+    if (runBenchmark) {
+        console.log("[Main] Cloud com trajetória customizada");
+    }
+
     Config.setServerUrl(datasetFolder);
 
     rootNode = await octreeLoader.load();
 
     if (!rootNode) {
         console.error("[Main] Não é possível iniciar. Octree não carregada.");
-    } else {
-        console.log("[Main] Iniciando aplicação...");
-        binFetcher.updateMaterial();
+        return;
+    }
 
-        const hasCustomSettings = applyCloudSettings(datasetFolder, viewer, binFetcher);
+    console.log("[Main] Iniciando aplicação...");
+    binFetcher.updateMaterial();
 
-        if (!hasCustomSettings) {
-            viewer.adjustCamera(rootNode.boundingBox);
-        }
+    const customSettings = applyCloudSettings(datasetFolder, viewer, binFetcher);
 
+    if (!customSettings) {
+        viewer.adjustCamera(rootNode.boundingBox);
+    }
 
+    if (runBenchmark && customSettings?.trajectory) {
+        activeTrajectory = new Trajectory(
+            viewer.controls,
+            telemetry,
+            customSettings.trajectory,
+            customSettings.speedMultiplier,
+            6.0
+        );
     }
 
     animate();
@@ -120,6 +145,16 @@ async function init(datasetFolder) {
 
 function clearScene() {
     console.log("[Main] Fechando aplicação...");
+
+    if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
+
+    if (activeTrajectory) {
+        activeTrajectory.abort();
+        activeTrajectory = null;
+    }
 
     rootNode = null;
     previousVisibleQueue = [];
