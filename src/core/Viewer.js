@@ -101,6 +101,7 @@ export class Viewer {
         this.renderer.renderLists.dispose();
         this.showNodes = false;
         this.showPoints = true;
+        this.timer.reset();
         this.update();
     }
 

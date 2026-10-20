@@ -136,10 +136,11 @@ async function init(datasetFolder, runBenchmark = false) {
             telemetry,
             customSettings.trajectory,
             customSettings.speedMultiplier,
-            6.0
+            3.0
         );
     }
 
+    viewer.timer.reset();
     animate();
 }
 
