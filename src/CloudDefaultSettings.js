@@ -186,7 +186,7 @@ export async function buildDatasetTableUI() {
     const healthChecks = await Promise.all(entries.map(async ([cloudName]) => {
         const url = `${Config.SERVER_BASE_URL}${cloudName}/octree.json`;
         try {
-            const response = await fetch(url, { method: 'HEAD' });
+            const response = await fetch(url, { method: 'HEAD', cache: 'no-store' });
             return response.ok;
         } catch (error) {
             console.log(`[Verifier] Cloud ${cloudName} indisponível no momento`);
