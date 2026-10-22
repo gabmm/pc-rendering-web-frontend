@@ -28,7 +28,7 @@ export const CloudSettings = {
 
         position: { x: -0.97, y: 0.41, z: 3.57 },
         target: { x: 1.10, y: 1.76, z: 0.80 },
-        pointSize: 0.001,
+        pointSize: 0.005,
 
         speedMultiplier: 0.5,
         trajectory: buddhaTraj
