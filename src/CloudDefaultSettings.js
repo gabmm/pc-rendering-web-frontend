@@ -196,7 +196,8 @@ export async function buildDatasetTableUI() {
 
     entries.forEach(([cloudName, data], i) => {
 
-        const hasTrajectory = data.trajectory?.length > 2;
+        const hasTrajectory = false;
+        //const hasTrajectory = data.trajectory?.length > 2;
 
         const actionCell = healthChecks[i]
             ? `<button onclick="window.loadDataset('${cloudName}')" style="cursor: pointer; padding: 5px 10px; background: #333; color: white; border: 1px solid #555; border-radius: 4px;">

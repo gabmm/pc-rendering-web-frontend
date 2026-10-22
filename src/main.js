@@ -89,14 +89,16 @@ function animate() {
 
     frameCountForFps = telemetry.updateFps(frameCountForFps);
 
-    telemetry.update(
-        visibleQueue.length,
-        binFetcher.activeFetches.size,
-        cacheManager.loadedNodes.size,
-        visiblePointsQty,
-        viewer.showNodes,
-        binFetcher.enableFetching
-    );
+    if (frameCountForFps === 0) {
+        telemetry.update(
+            visibleQueue.length,
+            binFetcher.activeFetches.size,
+            cacheManager.loadedNodes.size,
+            visiblePointsQty,
+            viewer.showNodes,
+            binFetcher.enableFetching
+        );
+    }
 
     const timerContext = telemetry.beginGpuTimer(visiblePointsQty);
 
