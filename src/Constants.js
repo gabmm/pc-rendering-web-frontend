@@ -4,7 +4,7 @@ export const Config = {
     //SERVER_BASE_URL: 'http://localhost:8080/datasets/',
     PING_FILE: 'ping.txt',
     PING_INTERVAL: 2000,
-    POINT_BUDGET: 1000000, // máximo de pontos na tela
+    POINT_BUDGET: 5000000, // máximo de pontos na tela
     MAX_CONCURRENT_FETCHES: 5, // Limite de concorrência de rede 
     MIN_NODE_PIXEL_SIZE: 30, // Limite do projectedSize
     MAX_AGE_FRAMES: 120,
