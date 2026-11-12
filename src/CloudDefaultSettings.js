@@ -8,9 +8,9 @@ export const CloudSettings = {
     "amsterdam": {
         size: "34.61",
         isRgb: "Yes",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "Tile 25EZ1_06 from AHN5",
+        sourceLink: "https://geotiles.citg.tudelft.nl/",
+        sourceLabel: "geotiles",
 
         position: { x: 48.21, y: 7.51, z: 520.17 },
         target: { x: 443.31, y: 636.88, z: -437.47 },
@@ -22,12 +22,16 @@ export const CloudSettings = {
     "buddha": {
         size: "18.56",
         isRgb: "Yes",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "Avery Island Buddha",
+        sourceLabel: "xyz",
+        sourceLink: "https://xyz.cct.lsu.edu/avery-island-buddha/",
 
-        position: { x: -0.97, y: 0.41, z: 3.57 },
-        target: { x: 1.10, y: 1.76, z: 0.80 },
+        // position: { x: -0.97, y: 0.41, z: 3.57 },
+        // target: { x: 1.10, y: 1.76, z: 0.80 },
+
+        position: { x: -0.50, y: -1.37, z: 2.05 },
+        target: { x: 1.45, y: 1.55, z: 0.85 },
+
         pointSize: 0.005,
 
         speedMultiplier: 0.5,
@@ -36,9 +40,9 @@ export const CloudSettings = {
     "cephalotaxus-harringtonii-tree": {
         size: "0.51",
         isRgb: "Yes",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "Tree from Cloud Forest Library",
+        sourceLabel: "xyz",
+        sourceLink: "https://xyz.cct.lsu.edu/cephalotaxus-harringtonii-01/",
 
         position: { x: 0.07, y: 0.96, z: 0.44 },
         target: { x: 0.43, y: 0.23, z: -0.06 },
@@ -47,9 +51,9 @@ export const CloudSettings = {
     "dinning-room": {
         size: "268.42",
         isRgb: "Yes",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "Room from Rosedown",
+        sourceLabel: "xyz",
+        sourceLink: "https://xyz.cct.lsu.edu/rosedown/",
 
         position: { x: 4.66, y: 1.07, z: 1.93 },
         target: { x: 3.96, y: 1.70, z: 1.76 },
@@ -58,9 +62,9 @@ export const CloudSettings = {
     "dublin": {
         size: "1405.48",
         isRgb: "No",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "Aerial Laser and Photogrammetry Survey of Dublin City",
+        sourceLabel: "nyu",
+        sourceLink: "https://ultraviolet.library.nyu.edu/records/aqjnq-6c976",
 
         position: { x: 3463.95, y: 1026.44, z: 461.50 },
         target: { x: 1938.45, y: 1339.69, z: -278.85 },
@@ -69,9 +73,9 @@ export const CloudSettings = {
     "garden": {
         size: "41.18",
         isRgb: "Yes",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "Computational design for a garden generated from procedural noise and modeled as a point cloud",
+        sourceLabel: "xyz",
+        sourceLink: "https://xyz.cct.lsu.edu/cloud-garden/",
 
         position: { x: 13.57, y: 0.03, z: 3.61 },
         target: { x: 8.58, y: 4.84, z: 0.26 },
@@ -80,9 +84,9 @@ export const CloudSettings = {
     "hilltop": {
         size: "196.92",
         isRgb: "Yes",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "Scan of Hilltop Arboretum in Baton Rouge, Louisiana",
+        sourceLabel: "xyz",
+        sourceLink: "https://xyz.cct.lsu.edu/hilltop-lidar/",
 
         position: { x: 210.40, y: 532.10, z: 92.75 },
         target: { x: 229.94, y: 380.12, z: -4.72 },
@@ -94,9 +98,9 @@ export const CloudSettings = {
     "monarch-of-the-swamp-tree": {
         size: "22.87",
         isRgb: "Yes",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "Tree from Atlas of Heritage Trees",
+        sourceLabel: "xyz",
+        sourceLink: "https://xyz.cct.lsu.edu/monarch-of-the-swamp/",
 
         position: { x: 3.18, y: -16.42, z: 17.95 },
         target: { x: 13.87, y: 8.04, z: 10.22 },
@@ -105,9 +109,9 @@ export const CloudSettings = {
     "petit-versailles": {
         size: "198.29",
         isRgb: "Yes",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "19th century pleasure garden of Valcour Aime",
+        sourceLabel: "xyz",
+        sourceLink: "https://xyz.cct.lsu.edu/petit-versailles/",
 
         position: { x: 260.93, y: 167.41, z: 60.08 },
         target: { x: 156.52, y: 346.51, z: -16.16 },
@@ -116,9 +120,9 @@ export const CloudSettings = {
     "pisa": {
         size: "185.40",
         isRgb: "Yes",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "Pisa's Piazza del Duomo",
+        sourceLabel: "openheritage3d",
+        sourceLink: "https://openheritage3d.org/project.php?id=dbg6-x966",
 
         position: { x: 83.88, y: 235.70, z: 54.79 },
         target: { x: 188.01, y: 280.23, z: 41.26 },
@@ -127,9 +131,9 @@ export const CloudSettings = {
     "rosedown": {
         size: "1448.38",
         isRgb: "Yes",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "Rosedown Plantation State Historic Site from St. Francisville",
+        sourceLabel: "xyz",
+        sourceLink: "https://xyz.cct.lsu.edu/rosedown/",
 
         position: { x: 399.65, y: 218.92, z: 44.31 },
         target: { x: 335.78, y: 217.19, z: 16.06 },
@@ -141,9 +145,9 @@ export const CloudSettings = {
     "san-gabriel-mountain": {
         size: "234.92",
         isRgb: "No",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "San Gabriel mountains, California - USA",
+        sourceLabel: "opentopography",
+        sourceLink: "https://portal.opentopography.org/lidarDataset?opentopoID=OTLAS.032023.26911.2",
 
         position: { x: 304.30, y: 332.21, z: 310.95 },
         target: { x: 2668.92, y: 931.94, z: -763.72 },
@@ -152,9 +156,9 @@ export const CloudSettings = {
     "unnamed": {
         size: "381.68",
         isRgb: "Yes",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "unknown",
+        sourceLabel: "sourceforge",
+        sourceLink: "https://sourceforge.net/projects/e57-3d-imgfmt/files/E57Example-data/",
 
         position: { x: 90.60, y: 42.83, z: 31.01 },
         target: { x: 68.94, y: 67.31, z: 10.84 },
@@ -163,9 +167,9 @@ export const CloudSettings = {
     "vulcan-mountain": {
         size: "156.70",
         isRgb: "Yes",
-        description: "N/A",
-        sourceLabel: "N/A",
-        sourceLink: "N/A",
+        description: "Volcan Mountain Wilderness Preserve, California - USA",
+        sourceLabel: "opentopography",
+        sourceLink: "https://portal.opentopography.org/lidarDataset?opentopoID=OTLAS.042026.32611.1",
 
         position: { x: 345.67, y: 1.10, z: 121.59 },
         target: { x: 234.59, y: 105.82, z: 19.64 },

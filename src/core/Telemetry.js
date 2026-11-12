@@ -88,16 +88,17 @@ export class Telemetry {
     update(visibleNodes, activeFetches, cachedNodes, visiblePoints, showNodes, enableFetching) {
         this.statusDiv.innerHTML = `
             <div style="font-weight: bold; margin-bottom: 8px;">STATUS</div>
-            <div>FPS                     : ${this.currentFps}</div>
-            <div>Ping                    : ${this.currentPing} ms</div>
-            <div>Nós Visíveis            : ${visibleNodes}</div>
-            <div>Pontos Visíveis         : ${visiblePoints}</div>
-            <div>Downloads Pendentes     : ${activeFetches} / 5</div>
-            <div>Cache                   : ${cachedNodes}</div>
-            <div>Mostrar nós? [n]        : ${showNodes ? 'yes' : 'no'}</div>
-            <div>Habilitar download? [p] : ${enableFetching ? 'yes' : 'no'}</div>
+            <div>FPS                      : ${this.currentFps}</div>
+            <div>Ping                     : ${this.currentPing} ms</div>
+            <div>Nós Visíveis             : ${visibleNodes}</div>
+            <div>Pontos Visíveis          : ${visiblePoints}</div>
+            <div>Downloads Pendentes      : ${activeFetches} / 5</div>
+            <div>Cache                    : ${cachedNodes}</div>
+            <div>Mostrar nós visíveis? [n]: ${showNodes ? 'yes' : 'no'}</div>
+            <div>Mostrar todos nós? [t]   : ${showNodes ? 'yes' : 'no'}</div>
+            <div>Habilitar download? [p]  : ${enableFetching ? 'yes' : 'no'}</div>
             <div>Limpar nós [l]</div>
-            <div>Capturando dados? [r]   : ${this.isRecording ? 'yes' : 'no'}</div>
+            <div>Capturando dados? [r]    : ${this.isRecording ? 'yes' : 'no'}</div>
         `;
     }
 
